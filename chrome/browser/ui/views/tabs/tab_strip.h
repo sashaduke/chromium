@@ -45,6 +45,11 @@ class TabStripController;
 class TabStripObserver;
 class TabStyle;
 
+enum class TabStripLayoutType {
+  kHorizontal,
+  kVertical,
+};
+
 namespace gfx {
 class Rect;
 }
@@ -95,6 +100,9 @@ class TabStrip : public views::View,
 
   // Sets the observer to be notified of changes within this TabStrip.
   void SetTabStripObserver(TabStripObserver* observer);
+
+  void SetLayoutType(TabStripLayoutType layout_type);
+  TabStripLayoutType layout_type() const { return layout_type_; }
 
   // Sets `background_offset_` and schedules a paint.
   void SetBackgroundOffset(int background_offset);

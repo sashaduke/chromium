@@ -993,6 +993,10 @@ BrowserView::BrowserView(std::unique_ptr<Browser> browser)
   auto tabstrip = std::make_unique<TabStrip>(std::move(tabstrip_controller));
   tabstrip_ = tabstrip.get();
   tabstrip_controller_ptr->InitFromModel(tabstrip_);
+  if (kUseSidebarLayout) {
+    sidebar_tab_strip_controller_ = std::make_unique<SidebarTabStripController>(
+        this, tabstrip_);
+  }
   top_container_ = AddChildView(std::make_unique<TopContainerView>(this));
 
   if (GetIsWebAppType()) {

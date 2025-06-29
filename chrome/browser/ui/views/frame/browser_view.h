@@ -33,6 +33,7 @@
 #include "chrome/browser/ui/views/extensions/extension_keybinding_registry_views.h"
 #include "chrome/browser/ui/views/frame/browser_frame.h"
 #include "chrome/browser/ui/views/frame/browser_view_layout.h"
+#include "chrome/browser/ui/views/frame/sidebar_tab_strip_controller.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/immersive_mode_controller.h"
 #include "chrome/browser/ui/views/intent_picker_bubble_view.h"
@@ -1208,6 +1209,9 @@ class BrowserView : public BrowserWindow,
 
   // The TabStrip.
   raw_ptr<TabStrip> tabstrip_ = nullptr;
+
+  // Controller for the sidebar tab strip.
+  std::unique_ptr<SidebarTabStripController> sidebar_tab_strip_controller_;
 
   // the webui based tabstrip, when applicable. see https://crbug.com/989131.
   raw_ptr<WebUITabStripContainerView> webui_tab_strip_ = nullptr;
