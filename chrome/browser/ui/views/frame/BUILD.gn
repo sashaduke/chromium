@@ -4,8 +4,11 @@
 
 assert(!is_android, "ImmersiveModeController is Desktop only.")
 
-source_set("immersive_mode_controller") {
-  sources = [ "immersive_mode_controller.h" ]
+source_set("frame") {
+  sources = [
+    "immersive_mode_controller.h",
+    "sidebar_browser_view_layout.cc",
+    "sidebar_browser_view_layout.h",
 
   deps = [ "//base" ]
 }
