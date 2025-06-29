@@ -1103,15 +1103,28 @@ BrowserView::BrowserView(std::unique_ptr<Browser> browser)
       lens_overlay_view_, contents_scrim_view_, glic_border_, watermark_view_,
       new_tab_footer_web_view_separator_, new_tab_footer_web_view_));
 #else
-    // Use a feature flag or other mechanism to switch between layouts.
-  const bool kUseSidebarLayout = true;
+  contents_container->SetLayoutManager(std::make_unique<ContentsLayoutManager>(
+      devtools_web_view_, devtools_scrim_view_, contents_view,
+      lens_overlay_view_, contents_scrim_view_, nullptr, watermark_view_,
+      new_tab_footer_web_view_separator_, new_tab_footer_web_view_));
+#endif
 
+  const bool kUseSidebarLayout = true;
   if (kUseSidebarLayout) {
     SetLayoutManager(std::make_unique<SidebarBrowserViewLayout>(
         this, tab_strip_region_view_, toolbar_, infobar_container_,
         contents_container_));
   } else {
-#endif
+    SetLayoutManager(std::make_unique<BrowserViewLayout>(
+        std::make_unique<BrowserViewLayoutDelegateImpl>(this), this, window_scrim_,
+        top_container_, web_app_frame_toolbar_, web_app_window_title_,
+        tab_strip_region_view_, tabstrip_, toolbar_, infobar_container_,
+        contents_container_, multi_contents_view_,
+        left_aligned_side_panel_separator_, unified_side_panel_,
+        right_aligned_side_panel_separator_, side_panel_rounded_corner_,
+        immersive_mode_controller_.get(), contents_separator_));
+  }
+
 
   toolbar_ = top_container_->AddChildView(
       std::make_unique<ToolbarView>(browser_.get(), this));
