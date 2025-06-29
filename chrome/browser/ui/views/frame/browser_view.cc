@@ -122,6 +122,7 @@
 #include "chrome/browser/ui/views/frame/app_menu_button.h"
 #include "chrome/browser/ui/views/frame/browser_frame.h"
 #include "chrome/browser/ui/views/frame/browser_view_layout.h"
+#include "chrome/browser/ui/views/frame/sidebar_browser_view_layout.h"
 #include "chrome/browser/ui/views/frame/browser_view_layout_delegate.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/immersive_mode_controller.h"
@@ -1102,10 +1103,14 @@ BrowserView::BrowserView(std::unique_ptr<Browser> browser)
       lens_overlay_view_, contents_scrim_view_, glic_border_, watermark_view_,
       new_tab_footer_web_view_separator_, new_tab_footer_web_view_));
 #else
-  contents_container->SetLayoutManager(std::make_unique<ContentsLayoutManager>(
-      devtools_web_view_, devtools_scrim_view_, contents_view,
-      lens_overlay_view_, contents_scrim_view_, nullptr, watermark_view_,
-      new_tab_footer_web_view_separator_, new_tab_footer_web_view_));
+    // Use a feature flag or other mechanism to switch between layouts.
+  const bool kUseSidebarLayout = true;
+
+  if (kUseSidebarLayout) {
+    SetLayoutManager(std::make_unique<SidebarBrowserViewLayout>(
+        this, tab_strip_region_view_, toolbar_, infobar_container_,
+        contents_container_));
+  } else {
 #endif
 
   toolbar_ = top_container_->AddChildView(
